@@ -37,12 +37,13 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // desde android 13 el permiso de galeria cambia de nombre
+        // android 13 cambio el nombre del permiso de galeria,
+        // por se revisa la version
         String galeria = Build.VERSION.SDK_INT >= 33
                 ? Manifest.permission.READ_MEDIA_IMAGES
                 : Manifest.permission.READ_EXTERNAL_STORAGE;
 
-        // apenas abro la app pido microfono y galeria
+        // apenas abro la app se pide microfono y galeria
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.RECORD_AUDIO, galeria}, 1);
 
@@ -50,14 +51,14 @@ public class MainActivity extends AppCompatActivity {
         Button animateButton = findViewById(R.id.animateButton);
 
         animateButton.setOnClickListener(v -> {
-            // si no tiene el permiso de galeria, no dejaa ver la imagen
+            // si no tiene el permiso de galeria, no permite ver la imagen
             if (ContextCompat.checkSelfPermission(this, galeria) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, galeria)) {
                     // si fue denegado una sola vez, todavia se puede volver a pedir desde aqui
                     Toast.makeText(this, "Necesito el permiso para mostrar la imagen", Toast.LENGTH_SHORT).show();
                     ActivityCompat.requestPermissions(this, new String[]{galeria}, 1);
                 } else {
-                    // en caso de querer activarlos(si fueron denegados), manda a configuracion para que lo active
+                    // si lo denegaron 2 veces ya no deja preguntar, asi que lo manda a configuracion para que lo active
                     Toast.makeText(this, "Activalo en Configuracion", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                             Uri.parse("package:" + getPackageName())));
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            // muestro u oculto la imagen con los fade
+            // se muestra u oculta la imagen con los fade
             mostrando = !mostrando;
             imageView.setVisibility(View.VISIBLE);
             imageView.startAnimation(AnimationUtils.loadAnimation(this, mostrando ? R.anim.fade_in : R.anim.fade_out));
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         //aqui deberia ir la parte del audio y video
     }
 
-    // aqui veo qué respondio el usuario con los permisos
+    // aqui veo que respondio el usuario con los permisos
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
