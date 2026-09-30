@@ -1,20 +1,29 @@
 package com.devst.appvoz;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    // llevo la cuenta de si la imagen se está mostrando o no
+    // aqui voy guardando si la imagen se ve o no
     private boolean mostrando = false;
 
     @Override
@@ -28,17 +37,52 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // desde android 13 el permiso de galeria cambia de nombre
+        String galeria = Build.VERSION.SDK_INT >= 33
+                ? Manifest.permission.READ_MEDIA_IMAGES
+                : Manifest.permission.READ_EXTERNAL_STORAGE;
+
+        // apenas abro la app pido microfono y galeria
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.RECORD_AUDIO, galeria}, 1);
+
         ImageView imageView = findViewById(R.id.imageView);
         Button animateButton = findViewById(R.id.animateButton);
 
-        // un mismo botón muestra u oculta la imagen con su animación
         animateButton.setOnClickListener(v -> {
-            mostrando = !mostrando; // cambio el estado primero
+            // si no tiene el permiso de galeria, no dejaa ver la imagen
+            if (ContextCompat.checkSelfPermission(this, galeria) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, galeria)) {
+                    // si fue denegado una sola vez, todavia se puede volver a pedir desde aqui
+                    Toast.makeText(this, "Necesito el permiso para mostrar la imagen", Toast.LENGTH_SHORT).show();
+                    ActivityCompat.requestPermissions(this, new String[]{galeria}, 1);
+                } else {
+                    // en caso de querer activarlos(si fueron denegados), manda a configuracion para que lo active
+                    Toast.makeText(this, "Activalo en Configuracion", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.parse("package:" + getPackageName())));
+                }
+                return;
+            }
+
+            // muestro u oculto la imagen con los fade
+            mostrando = !mostrando;
             imageView.setVisibility(View.VISIBLE);
             imageView.startAnimation(AnimationUtils.loadAnimation(this, mostrando ? R.anim.fade_in : R.anim.fade_out));
             animateButton.setText(mostrando ? "Ocultar imagen" : "Mostrar imagen");
         });
 
-        // ===== PARTE  de audio y video va aquí =====
+        //aqui deberia ir la parte del audio y video
+    }
+
+    // aqui veo qué respondio el usuario con los permisos
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean todoOk = true;
+        for (int r : grantResults) {
+            if (r != PackageManager.PERMISSION_GRANTED) todoOk = false;
+        }
+        Toast.makeText(this, todoOk ? "Permisos listos" : "Falta algun permiso", Toast.LENGTH_SHORT).show();
     }
 }
