@@ -84,7 +84,6 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnDetalle"
             style="@style/BotonApp"
-            android:layout_marginTop="20dp"
             android:text="🔍 Ver detalle de la imagen" />
 
         <androidx.appcompat.widget.AppCompatButton
