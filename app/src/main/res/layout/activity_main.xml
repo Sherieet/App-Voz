@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="match_parent"
@@ -7,25 +8,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:padding="24dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mi galería"
+            android:textColor="@color/texto"
             android:textSize="36sp"
-            android:textStyle="bold"
-            android:textColor="@color/texto" />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:text="multimedia simple"
-            android:textSize="18sp"
-            android:textColor="#888888" />
+            android:textColor="#888888"
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,8 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:scaleType="centerCrop"
-                android:visibility="invisible"
-                android:src="@drawable/foto" />
+                android:src="@drawable/foto"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -48,37 +49,52 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/boton_principal"
+            android:text="Mostrar imagen"
             android:textAllCaps="false"
             android:textColor="@color/texto"
-            android:textSize="18sp"
-            android:text="Mostrar imagen" />
+            android:textSize="18sp" />
+
+        <!-- Intents implicitos -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCamara"
+            style="@style/BotonApp"
+            android:text="📷 Tomar foto" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/playAudioButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/boton_minimal"
-            android:textAllCaps="false"
-            android:textColor="@color/texto_suave"
-            android:textSize="18sp"
-            android:text="Reproducir audio" />
-
-        <VideoView
-            android:id="@+id/myVideoView"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_marginTop="12dp" />
+            android:id="@+id/btnGaleria"
+            style="@style/BotonApp"
+            android:text="🖼️ Elegir de galería" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/playVideoButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/boton_minimal"
-            android:textAllCaps="false"
-            android:textColor="@color/texto_suave"
-            android:textSize="18sp"
-            android:text="Reproducir video" />
+            android:id="@+id/btnWeb"
+            style="@style/BotonApp"
+            android:text="🌐 Abrir página web" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCorreo"
+            style="@style/BotonApp"
+            android:text="✉️ Enviar correo" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnWifi"
+            style="@style/BotonApp"
+            android:text="📶 Configuración Wi-Fi" />
+
+        <!-- Intents explicitos -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnDetalle"
+            style="@style/BotonApp"
+            android:layout_marginTop="20dp"
+            android:text="🔍 Ver detalle de la imagen" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnForm"
+            style="@style/BotonApp"
+            android:text="📝 Formulario" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAyuda"
+            style="@style/BotonApp"
+            android:text="❓ Ayuda" />
     </LinearLayout>
 </ScrollView>
